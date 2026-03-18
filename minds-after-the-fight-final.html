@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minds After the Fight — Cancer Survivorship & Mental Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:wght@300;400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:#1a1a18;background:#faf9f6;overflow-x:hidden}
+
+/* ══ INTRO PAGE ══ */
+#intro{
+  min-height:100vh;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;
+  position:relative;overflow:hidden;
+}
+
+/* left editorial */
+.intro-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 3rem 4rem 4rem;
+  position:relative;z-index:2;
+}
+.intro-kicker{
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;
+  color:#b0a890;margin-bottom:1.4rem;
+  display:flex;align-items:center;gap:10px;
+}
+.intro-kicker::before{content:'';width:28px;height:0.5px;background:#c8c0a8}
+.intro-hed{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(42px,5vw,68px);
+  font-weight:400;line-height:1.05;
+  letter-spacing:-1.5px;color:#1a1a18;
+  margin-bottom:.6rem;
+}
+.intro-hed em{font-style:italic;color:#7a6ff0}
+.intro-dek{
+  font-size:15px;line-height:1.8;
+  color:#6a6a58;max-width:440px;
+  margin-bottom:2.2rem;
+  border-left:2px solid #e8e0cc;
+  padding-left:1.2rem;
+}
+
+/* stat strip */
+.intro-stats{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  background:#e8e0cc;border:0.5px solid #e8e0cc;
+  border-radius:12px;overflow:hidden;max-width:380px;
+  margin-bottom:2rem;
+}
+.is{background:#faf9f6;padding:14px 16px}
+.is-n{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;line-height:1;margin-bottom:3px;
+}
+.is-l{font-size:11px;color:#8a8a78;line-height:1.4}
+
+/* CTA */
+.intro-cta{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.cta-btn{
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:11px 22px;border-radius:8px;cursor:pointer;
+  transition:all .2s;text-decoration:none;display:inline-block;
+}
+.cta-primary{
+  background:#1a1a18;color:#faf9f6;border:1.5px solid #1a1a18;
+}
+.cta-primary:hover{background:#3a3a30;border-color:#3a3a30}
+.cta-secondary{
+  background:transparent;color:#6a6a58;
+  border:0.5px solid #c8c0a8;
+}
+.cta-secondary:hover{background:#f0ece0;color:#1a1a18}
+
+.intro-hint{
+  margin-top:2rem;font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:#c8c0a8;display:flex;align-items:center;gap:8px;
+}
+.intro-hint::after{
+  content:'';flex:1;max-width:60px;height:0.5px;
+  background:#e0d8c8;
+}
+
+/* right 3D canvas */
+.intro-right{
+  position:relative;overflow:hidden;
+  background:#f5f0e8;
+  border-left:0.5px solid #e8e0cc;
+}
+#introCanvas{width:100%;height:100%;display:block}
+
+/* hover tooltip */
+#introTip{
+  position:absolute;pointer-events:none;
+  background:#faf9f6;border:0.5px solid #c8c0a8;
+  border-radius:10px;padding:12px 14px;
+  box-shadow:0 4px 24px rgba(0,0,0,.08);
+  opacity:0;transition:opacity .15s;z-index:20;
+  max-width:200px;
+}
+#introTip.vis{opacity:1}
+.it-title{
+  font-family:'Playfair Display',serif;font-size:15px;
+  font-style:italic;color:#1a1a18;margin-bottom:6px;
+}
+.it-row{display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:11px;color:#6a6a58}
+.it-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* canvas instruction */
+.canvas-label{
+  position:absolute;bottom:1.2rem;right:1.4rem;
+  font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:#c8c0a8;pointer-events:none;
+  display:flex;align-items:center;gap:6px;
+}
+.canvas-label::before{
+  content:'';width:16px;height:0.5px;background:#c8c0a8;
+}
+
+/* legend */
+.intro-legend{
+  position:absolute;top:1.4rem;right:1.4rem;
+  background:rgba(250,249,246,.92);
+  border:0.5px solid #e0d8c8;border-radius:8px;
+  padding:10px 12px;backdrop-filter:blur(8px);
+}
+.il-title{
+  font-family:'DM Mono',monospace;font-size:8px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:#b0a890;margin-bottom:6px;
+}
+.il-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:10px;color:#6a6a58}
+.il-swatch{width:12px;height:7px;border-radius:2px;flex-shrink:0}
+
+/* ══ STORY SECTION ══ */
+#story{background:#faf9f6}
+
+/* chapter nav */
+.story-nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,249,246,.95);
+  border-bottom:0.5px solid #e8e0cc;
+  backdrop-filter:blur(12px);
+  display:flex;overflow-x:auto;
+  scrollbar-width:none;
+}
+.story-nav::-webkit-scrollbar{display:none}
+.sn-step{
+  flex:1;min-width:100px;padding:11px 10px 12px;
+  text-align:center;cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all .18s;user-select:none;
+}
+.sn-step:hover{background:#f0ece0}
+.sn-step.active{border-bottom-color:#7a6ff0}
+.sn-num{
+  font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:#b0a890;margin-bottom:2px;
+}
+.sn-step.active .sn-num{color:#7a6ff0}
+.sn-label{font-size:11px;font-weight:500;color:#8a8a78;line-height:1.3}
+.sn-step.active .sn-label{color:#1a1a18}
+
+/* chapter layout */
+.chapter{
+  max-width:960px;margin:0 auto;
+  padding:5rem 2.5rem 4rem;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:start;
+  border-top:0.5px solid #e8e0cc;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.chapter.visible{opacity:1;transform:translateY(0)}
+.chapter.flip{direction:rtl}
+.chapter.flip>*{direction:ltr}
+.chapter.solo{grid-template-columns:1fr;max-width:680px;gap:0}
+
+.ch-num{
+  font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:#b0a890;margin-bottom:.9rem;
+}
+.ch-hed{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(24px,3vw,34px);
+  font-weight:400;line-height:1.15;
+  color:#1a1a18;margin-bottom:.6rem;
+}
+.ch-hed em{font-style:italic;color:#7a6ff0}
+.ch-rule{width:32px;height:2px;background:#7a6ff0;border-radius:1px;margin-bottom:1rem}
+.ch-body{font-size:13.5px;line-height:1.8;color:#6a6a58;margin-bottom:1.2rem}
+
+.pull{
+  border-left:2px solid #7a6ff0;
+  padding:10px 14px;
+  border-radius:0 8px 8px 0;
+  background:#f5f1fe;
+}
+.pull-text{
+  font-family:'Playfair Display',serif;
+  font-size:14px;font-style:italic;
+  line-height:1.65;color:#1a1a18;
+}
+.pull-attr{
+  font-family:'DM Mono',monospace;
+  font-size:9px;color:#b0a890;
+  margin-top:4px;letter-spacing:.5px;
+}
+
+/* data visuals */
+.vis-card{
+  background:#fff;border:0.5px solid #e8e0cc;
+  border-radius:14px;padding:20px;
+}
+.vc-label{
+  font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:#b0a890;margin-bottom:12px;
+}
+
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.br-lbl{font-family:'DM Mono',monospace;font-size:11px;color:#8a8a78;width:96px;flex-shrink:0}
+.br-track{flex:1;height:7px;background:#f0ece0;border-radius:4px;overflow:hidden}
+.br-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.br-n{font-family:'DM Mono',monospace;font-size:11px;width:18px;text-align:right;font-weight:500;flex-shrink:0}
+
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+.stat-box{background:#faf9f6;border:0.5px solid #e8e0cc;border-radius:10px;padding:14px;text-align:center}
+.sb-n{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:3px}
+.sb-l{font-size:11px;color:#8a8a78;line-height:1.4}
+
+/* timeline */
+.tl-hdr{display:grid;grid-template-columns:22px 1fr 1fr 1fr 30px;gap:3px;margin-bottom:6px}
+.tl-ph{
+  font-family:'DM Mono',monospace;font-size:8px;
+  letter-spacing:.5px;padding:5px 3px;
+  border-radius:4px;text-align:center;
+}
+.tl-row{display:grid;grid-template-columns:22px 1fr 1fr 1fr 30px;gap:3px;margin-bottom:4px;align-items:center}
+.tl-pl{font-family:'DM Mono',monospace;font-size:10px;color:#b0a890;text-align:center}
+.tl-cell{height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3px}
+.tl-note{font-family:'DM Mono',monospace;font-size:9px;color:#b0a890;text-align:right}
+
+/* voices */
+.voice{
+  border-left:2px solid #c8a840;
+  background:#fffdf0;border-radius:0 8px 8px 0;
+  padding:9px 12px;margin-bottom:6px;
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-style:italic;
+  line-height:1.55;color:#1a1a18;
+}
+.voice span{
+  font-family:'DM Mono',sans-serif;font-style:normal;
+  font-size:9px;color:#b0a890;display:block;
+  margin-top:3px;letter-spacing:.5px;
+}
+
+/* bubbles */
+.bubble-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.8rem}
+.p-bub{
+  width:42px;height:42px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:11px;
+  cursor:pointer;transition:all .15s;
+  border:0.5px solid transparent;user-select:none;
+}
+.p-bub:hover{transform:scale(1.1)}
+.p-bub.enc{background:#e8f5ee;color:#1a6b3a;border-color:#a8d8b8}
+.p-bub.neu{background:#fef5e0;color:#7a4808;border-color:#e8c870}
+.p-bub.sel{border-width:1.5px;transform:scale(1.1)}
+
+.detail-box{
+  background:#faf9f6;border:0.5px solid #e8e0cc;
+  border-radius:8px;padding:12px 14px;
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:13px;line-height:1.6;color:#3a3a30;
+  min-height:52px;
+}
+
+/* access grid */
+.ag{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:.8rem}
+.ap{
+  background:#faf9f6;border:0.5px solid #e8e0cc;
+  border-radius:8px;padding:10px 6px;
+  text-align:center;cursor:pointer;transition:all .15s;
+}
+.ap:hover{border-color:#c8c0a8;transform:translateY(-1px)}
+.ap.sel{border-color:#7a6ff0;border-width:1px;background:#f5f1fe}
+.ap-l{font-family:'DM Mono',monospace;font-size:10px;color:#8a8a78;margin-bottom:6px}
+.ap-dots{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-bottom:5px}
+.ap-dot{width:7px;height:7px;border-radius:50%}
+.ap-pr{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.5px;text-transform:uppercase}
+
+.priv-bar{display:flex;gap:4px;height:56px}
+.priv-blk{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.priv-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;line-height:1}
+.priv-l{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3px;text-align:center;line-height:1.3}
+
+/* findings */
+.findings{background:#f0ece0;padding:5rem 2.5rem 6rem;border-top:0.5px solid #e0d8c8}
+.findings-inner{max-width:860px;margin:0 auto}
+.findings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:2rem 0}
+.fc{background:#faf9f6;border:0.5px solid #e8e0cc;border-radius:14px;padding:20px}
+.fc-bar{height:2px;border-radius:1px;margin-bottom:14px}
+.fc-title{font-size:14px;font-weight:500;color:#1a1a18;margin-bottom:7px;line-height:1.3}
+.fc-body{font-size:12px;color:#6a6a58;line-height:1.65}
+.f-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2rem}
+.fs{background:#fff;border:0.5px solid #e8e0cc;border-radius:10px;padding:14px;text-align:center}
+.fs-n{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;line-height:1;margin-bottom:3px}
+.fs-l{font-family:'DM Mono',monospace;font-size:9px;color:#8a8a78;letter-spacing:.3px;line-height:1.4}
+
+.credits{
+  text-align:center;padding:2rem;
+  font-family:'DM Mono',monospace;font-size:9px;
+  color:#b0a890;letter-spacing:.8px;line-height:1.9;
+  border-top:0.5px solid #e0d8c8;background:#faf9f6;
+}
+
+/* ── P-LABEL OVERLAY ── */
+#pLabels{position:absolute;inset:0;pointer-events:none;z-index:5}
+.pl-el{
+  position:absolute;transform:translate(-50%,0);
+  font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:#b0a890;transition:color .3s;pointer-events:none;
+}
+.pl-el.hi{color:#7a6ff0;font-weight:500}
+
+/* loading */
+#loading{
+  position:fixed;inset:0;z-index:200;
+  background:#faf9f6;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1.2rem;
+  transition:opacity .7s ease;
+}
+#loading.done{opacity:0;pointer-events:none}
+.ld-title{font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:#6a6a58}
+.ld-bar-wrap{width:220px;height:1px;background:#e8e0cc;border-radius:1px;overflow:hidden}
+.ld-bar{height:100%;background:#7a6ff0;width:0%;transition:width .35s;border-radius:1px}
+.ld-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#b0a890;text-transform:uppercase}
+
+@media(max-width:768px){
+  #intro{grid-template-columns:1fr}
+  .intro-right{height:50vw}
+  .chapter{grid-template-columns:1fr;gap:2.5rem}
+  .chapter.flip{direction:ltr}
+  .findings-grid{grid-template-columns:1fr}
+  .f-stats{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="ld-title">Minds after the fight</div>
+  <div class="ld-bar-wrap"><div class="ld-bar" id="ldBar"></div></div>
+  <div class="ld-lbl" id="ldLbl">Preparing scene…</div>
+</div>
+
+<!-- ════════════════════════════
+     INTRO
+════════════════════════════ -->
+<section id="intro">
+
+  <!-- LEFT: editorial -->
+  <div class="intro-left">
+    <div class="intro-kicker">Cancer survivorship · Mental health · n = 8</div>
+
+    <h1 class="intro-hed">
+      Minds<br>after<br>the <em>fight</em>
+    </h1>
+
+    <p class="intro-dek">
+      When cancer treatment ends, its emotional weight does not.
+      Eight survivors share what they carry — anxiety, sleeplessness,
+      isolation — and what digital monitoring could offer them next.
+      Each column rising on the right is a person. Hover to meet them.
+    </p>
+
+    <div class="intro-stats">
+      <div class="is"><div class="is-n" style="color:#2a9e75">100%</div><div class="is-l">reported sleep disturbance</div></div>
+      <div class="is"><div class="is-n" style="color:#7a6ff0">87%</div><div class="is-l">experienced anxiety</div></div>
+      <div class="is"><div class="is-n" style="color:#7a6ff0">7/8</div><div class="is-l">support digital monitoring</div></div>
+      <div class="is"><div class="is-n" style="color:#2a9e75">6/8</div><div class="is-l">need long-term follow-up</div></div>
+    </div>
+
+    <div class="intro-cta">
+      <a class="cta-btn cta-primary" href="#story" onclick="scrollToStory()">Explore the story</a>
+      <a class="cta-btn cta-secondary" href="#" onclick="openFilters();return false">Filter the 3D →</a>
+    </div>
+
+    <div class="intro-hint">Drag · Rotate · Hover to explore</div>
+  </div>
+
+  <!-- RIGHT: 3D canvas -->
+  <div class="intro-right">
+    <canvas id="introCanvas"></canvas>
+
+    <!-- participant labels -->
+    <div id="pLabels"></div>
+
+    <!-- tooltip -->
+    <div id="introTip">
+      <div class="it-title" id="itTitle">Participant</div>
+      <div id="itRows"></div>
+    </div>
+
+    <!-- legend -->
+    <div class="intro-legend">
+      <div class="il-title">Symptom layers</div>
+      <div class="il-row"><div class="il-swatch" style="background:#1d7a52"></div>Sleep disturbance</div>
+      <div class="il-row"><div class="il-swatch" style="background:#5a4ed0"></div>Anxiety</div>
+      <div class="il-row"><div class="il-swatch" style="background:#c05030"></div>Depression</div>
+      <div class="il-row"><div class="il-swatch" style="background:#a07818"></div>Social isolation</div>
+    </div>
+
+    <!-- view filters -->
+    <div id="filterPanel" style="position:absolute;top:1.4rem;left:1.4rem;display:flex;flex-direction:column;gap:5px;display:none">
+      <button class="cta-btn cta-secondary" style="font-size:9px;padding:6px 12px" onclick="setView('all')">All</button>
+      <button class="cta-btn cta-secondary" style="font-size:9px;padding:6px 12px" onclick="setView('sleep')">Sleep ×8</button>
+      <button class="cta-btn cta-secondary" style="font-size:9px;padding:6px 12px" onclick="setView('anxiety')">Anxiety ×7</button>
+      <button class="cta-btn cta-secondary" style="font-size:9px;padding:6px 12px" onclick="setView('depression')">Depression ×2</button>
+      <button class="cta-btn cta-secondary" style="font-size:9px;padding:6px 12px" onclick="setView('tech')">Tech stance</button>
+      <button class="cta-btn cta-secondary" style="font-size:9px;padding:6px 12px" onclick="setView('phases')">Care phases</button>
+    </div>
+
+    <div class="canvas-label">Drag to rotate</div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════
+     STORY
+════════════════════════════ -->
+<div id="story">
+
+  <!-- sticky chapter nav -->
+  <nav class="story-nav" id="storyNav">
+    <div class="sn-step active" data-ch="0" onclick="activeCh(0)"><div class="sn-num">01</div><div class="sn-label">Emotional weight</div></div>
+    <div class="sn-step" data-ch="1" onclick="activeCh(1)"><div class="sn-num">02</div><div class="sn-label">Care timeline</div></div>
+    <div class="sn-step" data-ch="2" onclick="activeCh(2)"><div class="sn-num">03</div><div class="sn-label">Tech tension</div></div>
+    <div class="sn-step" data-ch="3" onclick="activeCh(3)"><div class="sn-num">04</div><div class="sn-label">Trust & access</div></div>
+    <div class="sn-step" data-ch="4" onclick="activeCh(4)"><div class="sn-num">End</div><div class="sn-label">Key findings</div></div>
+  </nav>
+
+  <!-- CH1 -->
+  <div class="chapter" id="ch0">
+    <div>
+      <div class="ch-num">01 / The emotional weight</div>
+      <h2 class="ch-hed">Not one survivor<br>escaped poor <em>sleep</em></h2>
+      <div class="ch-rule"></div>
+      <p class="ch-body">Every single participant — all 8 — reported sleep disturbance after their cancer experience. Anxiety came close, affecting 7 of 8. Depression and social isolation appeared in fewer cases but clustered in the same individuals, compounding their burden.<br><br>Each column in the 3D view above is a survivor. The layers rising from the ground encode their symptoms — taller means more reported.</p>
+      <div class="pull">
+        <div class="pull-text">"The columns don't just show data — they show people carrying invisible weight long after their cancer treatment ended."</div>
+        <div class="pull-attr">Hover the 3D figures above to explore each survivor's profile</div>
+      </div>
+    </div>
+    <div class="vis-card">
+      <div class="vc-label">Prevalence across all 8 participants</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="sb-n" style="color:#1d7a52">8/8</div><div class="sb-l">Sleep disturbance — universal</div></div>
+        <div class="stat-box"><div class="sb-n" style="color:#7a6ff0">7/8</div><div class="sb-l">Anxiety — near-universal</div></div>
+        <div class="stat-box"><div class="sb-n" style="color:#c05030">2/8</div><div class="sb-l">Depression reported</div></div>
+        <div class="stat-box"><div class="sb-n" style="color:#a07818">1/8</div><div class="sb-l">Social isolation</div></div>
+      </div>
+      <div class="bar-row"><div class="br-lbl">Sleep disturb.</div><div class="br-track"><div class="br-fill" style="width:100%;background:#1d7a52"></div></div><div class="br-n" style="color:#1d7a52">8</div></div>
+      <div class="bar-row"><div class="br-lbl">Anxiety</div><div class="br-track"><div class="br-fill" style="width:87.5%;background:#5a4ed0"></div></div><div class="br-n" style="color:#7a6ff0">7</div></div>
+      <div class="bar-row"><div class="br-lbl">Depression</div><div class="br-track"><div class="br-fill" style="width:25%;background:#c05030"></div></div><div class="br-n" style="color:#c05030">2</div></div>
+      <div class="bar-row"><div class="br-lbl">Social isolation</div><div class="br-track"><div class="br-fill" style="width:12.5%;background:#a07818"></div></div><div class="br-n" style="color:#a07818">1</div></div>
+    </div>
+  </div>
+
+  <!-- CH2 -->
+  <div class="chapter flip" id="ch1">
+    <div>
+      <div class="ch-num">02 / The timeline of need</div>
+      <h2 class="ch-hed">Support must travel<br>with the <em>survivor</em></h2>
+      <div class="ch-rule"></div>
+      <p class="ch-body">Mental health monitoring isn't a single event — it spans three distinct phases of the care arc: pre-surgery, early survivorship, and long-term follow-up. Most survivors needed support well after treatment ended.<br><br>Long-term follow-up was the most-needed phase by far: 6 of 8. Only P2 and P7 required monitoring across all three phases, facing the longest mental health journeys.</p>
+      <div class="pull">
+        <div class="pull-text">"The care doesn't stop at the clinic door. Neither should the monitoring."</div>
+        <div class="pull-attr">Long-term follow-up · 6 of 8 participants</div>
+      </div>
+    </div>
+    <div class="vis-card">
+      <div class="vc-label">Each participant's monitoring journey</div>
+      <div class="tl-hdr">
+        <div></div>
+        <div class="tl-ph" style="background:#e8f0fa;color:#185fa5">Pre-surgery</div>
+        <div class="tl-ph" style="background:#f0eefe;color:#5a4ed0">Early surv.</div>
+        <div class="tl-ph" style="background:#e8f5ee;color:#1a6b3a">Long-term</div>
+        <div></div>
+      </div>
+      <div id="tlRows"></div>
+      <div class="bar-row" style="margin-top:12px"><div class="br-lbl">Pre-surgery</div><div class="br-track"><div class="br-fill" style="width:62.5%;background:#185fa5"></div></div><div class="br-n" style="color:#185fa5">5</div></div>
+      <div class="bar-row"><div class="br-lbl">Early surv.</div><div class="br-track"><div class="br-fill" style="width:25%;background:#5a4ed0"></div></div><div class="br-n" style="color:#7a6ff0">2</div></div>
+      <div class="bar-row"><div class="br-lbl">Long-term</div><div class="br-track"><div class="br-fill" style="width:75%;background:#1d7a52"></div></div><div class="br-n" style="color:#1d7a52">6</div></div>
+    </div>
+  </div>
+
+  <!-- CH3 -->
+  <div class="chapter" id="ch2">
+    <div>
+      <div class="ch-num">03 / Technology tension</div>
+      <h2 class="ch-hed">Open to wearables —<br>but <em>who is left behind?</em></h2>
+      <div class="ch-rule" style="background:#1d7a52"></div>
+      <p class="ch-body">Six of eight survivors were enthusiastic about using wearables to track mental health. The two who were uncertain raised a quiet but critical concern: older adults may be systematically excluded by technology-first solutions.<br><br>Both P1 and P4 were encouraging about wearables — but flagged uncertainty specifically about populations over 60, the very group most affected by cancer.</p>
+      <div class="pull" style="border-left-color:#a07818;background:#fffdf0">
+        <div class="pull-text">"Tech enthusiasm can mask a digital equity problem — the demographic most affected by cancer is often the least comfortable with new technology."</div>
+        <div class="pull-attr">Shared concern · Participants 1 &amp; 4</div>
+      </div>
+    </div>
+    <div class="vis-card">
+      <div class="vc-label">Click a participant to read their stance</div>
+      <div class="bubble-wrap" id="techBubbles"></div>
+      <div class="detail-box" id="techDetail">Select a participant above.</div>
+      <div class="vc-label" style="margin-top:1rem">Voices from the data</div>
+      <div class="voice">"I AM NOT A TECHIE"<span>Participant 3 — neutral stance</span></div>
+      <div class="voice">"Unsure of population above 60"<span>Participants 1 &amp; 4 — encouraging but flagging equity concern</span></div>
+      <div class="voice">"If it helps me I will consider for future"<span>Participant 8 — open but conditional</span></div>
+    </div>
+  </div>
+
+  <!-- CH4 -->
+  <div class="chapter flip" id="ch3">
+    <div>
+      <div class="ch-num">04 / Trust &amp; access</div>
+      <h2 class="ch-hed">Nearly all said yes —<br>on their own <em>terms</em></h2>
+      <div class="ch-rule" style="background:#c05030"></div>
+      <p class="ch-body">Support for DAPHNE digital monitoring was near-universal at 7 of 8. But the conditions mattered deeply — who holds the data and whether patients control it will determine whether the tool is adopted or avoided in real clinical settings.<br><br>The cancer team was the near-universal access preference, reflecting trust built through treatment. P7 extended trust to nurse practitioners. P3 supported summaries for clinicians only — not for herself.</p>
+      <div class="pull" style="border-left-color:#c05030;background:#fdf0ee">
+        <div class="pull-text">"Consent is granular. 'Yes to monitoring' does not mean 'yes to all access' — survivors distinguished carefully between who should see what."</div>
+        <div class="pull-attr">Trust is conditional · not assumed</div>
+      </div>
+    </div>
+    <div class="vis-card">
+      <div class="vc-label">Click to explore access preferences</div>
+      <div class="ag" id="accessGrid"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#8a8a78;font-family:'DM Mono',monospace"><div style="width:8px;height:8px;border-radius:50%;background:#7a6ff0"></div>Cancer team</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#8a8a78;font-family:'DM Mono',monospace"><div style="width:8px;height:8px;border-radius:50%;background:#5a4ed0"></div>MH provider</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#8a8a78;font-family:'DM Mono',monospace"><div style="width:8px;height:8px;border-radius:50%;background:#1d7a52"></div>Social worker</div>
+      </div>
+      <div class="detail-box" id="accessDetail">Select a participant to see their preferences.</div>
+      <div class="vc-label" style="margin-top:1rem">Privacy concerns</div>
+      <div class="priv-bar">
+        <div class="priv-blk" style="background:#e8f5ee;flex:5"><div class="priv-n" style="color:#1a6b3a">5</div><div class="priv-l" style="color:#1d7a52">No concern</div></div>
+        <div class="priv-blk" style="background:#fef5e0;flex:2"><div class="priv-n" style="color:#7a4808">2</div><div class="priv-l" style="color:#a07818">Maybe</div></div>
+        <div class="priv-blk" style="background:#f5f1fe;flex:1"><div class="priv-n" style="color:#4a3fa8">1</div><div class="priv-l" style="color:#7a6ff0">Concerned</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════
+     FINDINGS
+════════════════════════════ -->
+<section class="findings">
+  <div class="findings-inner">
+    <div class="ch-num">Key findings</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,44px);font-weight:400;line-height:1.15;color:#1a1a18;margin-bottom:.4rem">
+      Three principles <em style="font-style:italic;color:#7a6ff0">survivors taught us</em>
+    </h2>
+    <div style="width:40px;height:2px;background:#7a6ff0;border-radius:1px;margin-bottom:2rem"></div>
+    <div class="findings-grid">
+      <div class="fc"><div class="fc-bar" style="background:#7a6ff0"></div><div class="fc-title">Monitor across the full arc</div><div class="fc-body">Long-term follow-up was the most-needed phase — 6 of 8. Mental health tools must travel with the patient, not stop at discharge.</div></div>
+      <div class="fc"><div class="fc-bar" style="background:#1d7a52"></div><div class="fc-title">Design for non-techies</div><div class="fc-body">Older survivors — the demographic most affected by cancer — risk exclusion by tools designed for younger, tech-comfortable users. Digital equity is a clinical issue.</div></div>
+      <div class="fc"><div class="fc-bar" style="background:#c05030"></div><div class="fc-title">Trust is earned, not assumed</div><div class="fc-body">Near-universal support came with conditions. Who sees the data and whether patients control it will determine whether DAPHNE is adopted or avoided.</div></div>
+    </div>
+    <div class="f-stats">
+      <div class="fs"><div class="fs-n" style="color:#1d7a52">8/8</div><div class="fs-l">Sleep disturbance</div></div>
+      <div class="fs"><div class="fs-n" style="color:#7a6ff0">6/8</div><div class="fs-l">Need long-term monitoring</div></div>
+      <div class="fs"><div class="fs-n" style="color:#1d7a52">6/8</div><div class="fs-l">Encourage wearables</div></div>
+      <div class="fs"><div class="fs-n" style="color:#7a6ff0">7/8</div><div class="fs-l">Support DAPHNE</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="credits">
+  Qualitative study · 8 cancer survivors · DAPHNE digital monitoring concept<br>
+  University of Arizona Data Visualization Challenge · Graduate/Professional category<br>
+  Inspired by W.E.B. Du Bois's data portraiture tradition
+</div>
+
+<!-- THREE.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ══ DATA ══ */
+const S = [
+  {label:'P1',sleep:1,anxiety:1,depression:0,isolation:0,pre:1,early:0,long:0,tech:'enc',techNote:'Encouraging — with concern about populations over 60',cancer:1,mh:0,sw:1,priv:'no',accessNote:'Prefers cancer team + social worker. No privacy concerns.'},
+  {label:'P2',sleep:1,anxiety:1,depression:1,isolation:1,pre:1,early:1,long:1,tech:'enc',techNote:'Encouraging wearables',cancer:1,mh:0,sw:1,priv:'no',accessNote:'Supports concept across all phases. Cancer team + social worker. No privacy concerns.'},
+  {label:'P3',sleep:0,anxiety:0,depression:0,isolation:0,pre:0,early:0,long:1,tech:'neu',techNote:'"I AM NOT A TECHIE"',cancer:1,mh:1,sw:0,priv:'yes',accessNote:'"Yes but not to me" — supports summaries for clinicians only. Has privacy concerns.'},
+  {label:'P4',sleep:1,anxiety:1,depression:0,isolation:0,pre:1,early:0,long:1,tech:'enc',techNote:'Encouraging — with concern about populations over 60',cancer:1,mh:0,sw:0,priv:'no',accessNote:'Cancer team only. No privacy concerns.'},
+  {label:'P5',sleep:1,anxiety:1,depression:0,isolation:0,pre:0,early:0,long:1,tech:'enc',techNote:'Encouraging wearables',cancer:1,mh:0,sw:0,priv:'no',accessNote:'Cancer team only. No privacy concerns.'},
+  {label:'P6',sleep:1,anxiety:1,depression:0,isolation:0,pre:1,early:0,long:1,tech:'enc',techNote:'Encouraging wearables',cancer:1,mh:0,sw:0,priv:'no',accessNote:'Cancer team only. No privacy concerns.'},
+  {label:'P7',sleep:1,anxiety:1,depression:1,isolation:0,pre:1,early:1,long:1,tech:'enc',techNote:'Encouraging wearables',cancer:1,mh:0,sw:0,priv:'maybe',accessNote:'Cancer team + nurse practitioner. Privacy concerns: maybe.'},
+  {label:'P8',sleep:1,anxiety:1,depression:0,isolation:0,pre:1,early:0,long:0,tech:'neu',techNote:'"If it helps me I will consider for future"',cancer:1,mh:0,sw:0,priv:'maybe',accessNote:'Cancer team only. Privacy concerns: maybe.'}
+];
+
+const LM = [
+  {key:'sleep',     color:0x1d7a52, emissive:0x0a3020, glowColor:0x2a9e75, label:'Sleep disturbance', h:1.5},
+  {key:'anxiety',   color:0x5a4ed0, emissive:0x201060, glowColor:0x8b7ff0, label:'Anxiety',           h:1.1},
+  {key:'depression',color:0xc05030, emissive:0x401008, glowColor:0xe06040, label:'Depression',        h:0.75},
+  {key:'isolation', color:0xa07818, emissive:0x402808, glowColor:0xc09820, label:'Social isolation',  h:0.5},
+];
+
+/* ══ THREE.JS ══ */
+const cvs = document.getElementById('introCanvas');
+const container = document.querySelector('.intro-right');
+
+const renderer = new THREE.WebGLRenderer({canvas:cvs, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setClearColor(0xf5f0e8, 1);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xf5f0e8, 28, 55);
+
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+camera.position.set(0, 9, 20);
+camera.lookAt(0, 2, 0);
+
+function resize() {
+  const w = container.clientWidth, h = container.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+resize();
+new ResizeObserver(resize).observe(container);
+
+/* lights — warm natural for white bg */
+scene.add(new THREE.AmbientLight(0xfaf6ee, 0.9));
+const sun = new THREE.DirectionalLight(0xfff8f0, 1.0);
+sun.position.set(6, 14, 10);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left = -20; sun.shadow.camera.right = 20;
+sun.shadow.camera.top  =  20; sun.shadow.camera.bottom= -20;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xe0e8f8, 0.3);
+fill.position.set(-8, 4, -4);
+scene.add(fill);
+const purp = new THREE.PointLight(0x8b7ff0, 0.5, 22);
+purp.position.set(-6, 7, 2);
+scene.add(purp);
+
+/* ground */
+const groundGeo = new THREE.PlaneGeometry(40, 40);
+const groundMat = new THREE.MeshStandardMaterial({color:0xede8de, roughness:1});
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI/2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+/* subtle grid */
+const grid = new THREE.GridHelper(30, 30, 0xd8d0c0, 0xe8e0d0);
+grid.position.y = 0.01;
+scene.add(grid);
+
+/* orbit state */
+let drag=false, prevM={x:0,y:0};
+let sph={theta:0.25, phi:1.05, r:20};
+const tgt = new THREE.Vector3(0,2,0);
+
+function camUpdate(){
+  camera.position.set(
+    tgt.x + sph.r*Math.sin(sph.phi)*Math.sin(sph.theta),
+    tgt.y + sph.r*Math.cos(sph.phi),
+    tgt.z + sph.r*Math.sin(sph.phi)*Math.cos(sph.theta)
+  );
+  camera.lookAt(tgt);
+}
+
+cvs.addEventListener('mousedown', e=>{drag=true;prevM={x:e.clientX,y:e.clientY};});
+window.addEventListener('mouseup', ()=>drag=false);
+window.addEventListener('mousemove', e=>{
+  if(!drag)return;
+  sph.theta -= (e.clientX-prevM.x)*0.007;
+  sph.phi = Math.max(0.35, Math.min(1.4, sph.phi+(e.clientY-prevM.y)*0.007));
+  prevM={x:e.clientX,y:e.clientY};
+  camUpdate();
+});
+cvs.addEventListener('wheel', e=>{
+  sph.r = Math.max(9, Math.min(32, sph.r+e.deltaY*0.04));
+  camUpdate();
+},{passive:true});
+cvs.addEventListener('touchstart', e=>{if(e.touches.length===1){drag=true;prevM={x:e.touches[0].clientX,y:e.touches[0].clientY};}},{passive:true});
+cvs.addEventListener('touchmove', e=>{
+  if(!drag||e.touches.length!==1)return;
+  sph.theta -= (e.touches[0].clientX-prevM.x)*0.007;
+  sph.phi = Math.max(0.35, Math.min(1.4, sph.phi+(e.touches[0].clientY-prevM.y)*0.007));
+  prevM={x:e.touches[0].clientX,y:e.touches[0].clientY};
+  camUpdate();
+},{passive:true});
+cvs.addEventListener('touchend', ()=>drag=false,{passive:true});
+
+/* build columns */
+const cols=[];
+const N=S.length;
+const SPACING=2.6, CW=1.5;
+const startX = -(N-1)*SPACING/2;
+
+const matCache={};
+function mat(c,e,op=1){
+  const k=`${c}_${e}_${op}`;
+  if(!matCache[k]) matCache[k]=new THREE.MeshStandardMaterial({
+    color:c,emissive:e,emissiveIntensity:.2,
+    roughness:.6,metalness:.05,
+    transparent:op<1,opacity:op
+  });
+  return matCache[k];
+}
+const absentMat = new THREE.MeshStandardMaterial({color:0xddd8cc,roughness:1,transparent:true,opacity:.25});
+
+S.forEach((s,i)=>{
+  const grp = new THREE.Group();
+  grp.position.x = startX + i*SPACING;
+  grp.userData = {i, s};
+
+  // Base
+  const base = new THREE.Mesh(new THREE.BoxGeometry(CW,.05,CW), mat(0xc8c0a8,0x000000));
+  base.position.y=.025; base.receiveShadow=true;
+  grp.add(base);
+
+  let yOff=.05;
+  const layers=[];
+  LM.forEach(lm=>{
+    const present=s[lm.key];
+    const h = present ? lm.h : 0.07;
+    const mesh = new THREE.Mesh(
+      new THREE.BoxGeometry(CW,h,CW),
+      present ? mat(lm.color,lm.emissive) : absentMat.clone()
+    );
+    mesh.position.y = yOff+h/2;
+    mesh.castShadow = present;
+    mesh.receiveShadow = true;
+    mesh.userData={key:lm.key,present,origY:yOff+h/2};
+    grp.add(mesh);
+    layers.push({mesh,lm,present});
+    yOff += h+0.035;
+  });
+
+  scene.add(grp);
+  cols.push({grp,layers,totalH:yOff,i});
+});
+
+/* P labels HTML overlay */
+const pLabDiv = document.getElementById('pLabels');
+const pLabelEls=[];
+S.forEach((s,i)=>{
+  const el=document.createElement('div');
+  el.className='pl-el'; el.id='pl-'+i; el.textContent=s.label;
+  pLabDiv.appendChild(el); pLabelEls.push(el);
+});
+
+function updateLabels(){
+  const rect = container.getBoundingClientRect();
+  cols.forEach((col,i)=>{
+    const wp=new THREE.Vector3();
+    col.grp.getWorldPosition(wp); wp.y=-0.4;
+    const ndc=wp.clone().project(camera);
+    if(ndc.z>1){pLabelEls[i].style.display='none';return;}
+    pLabelEls[i].style.display='block';
+    pLabelEls[i].style.left = ((ndc.x*.5+.5)*rect.width)+'px';
+    pLabelEls[i].style.top  = ((-ndc.y*.5+.5)*rect.height+18)+'px';
+  });
+}
+
+/* tooltip */
+const tip=document.getElementById('introTip');
+const itTitle=document.getElementById('itTitle');
+const itRows=document.getElementById('itRows');
+let hovI=-1;
+const ray=new THREE.Raycaster();
+const m2=new THREE.Vector2();
+
+function onMouseMove(e){
+  if(drag){tip.classList.remove('vis');return;}
+  const rect=container.getBoundingClientRect();
+  if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom){tip.classList.remove('vis');return;}
+  m2.x=((e.clientX-rect.left)/rect.width)*2-1;
+  m2.y=-((e.clientY-rect.top)/rect.height)*2+1;
+  ray.setFromCamera(m2,camera);
+  const meshes=[];
+  cols.forEach(c=>c.layers.forEach(l=>meshes.push(l.mesh)));
+  const hits=ray.intersectObjects(meshes);
+  if(hits.length){
+    let fi=-1;
+    cols.forEach((c,ci)=>c.layers.forEach(l=>{if(l.mesh===hits[0].object)fi=ci;}));
+    if(fi!==hovI){
+      hovI=fi;
+      const sv=S[fi];
+      itTitle.textContent='Participant '+(fi+1);
+      itRows.innerHTML='';
+      LM.forEach(lm=>{
+        const row=document.createElement('div');
+        row.className='it-row';
+        const dot=document.createElement('div');dot.className='it-dot';
+        dot.style.background='#'+lm.color.toString(16).padStart(6,'0');
+        dot.style.opacity=sv[lm.key]?'1':'.2';
+        const txt=document.createElement('span');
+        txt.textContent=lm.label;txt.style.opacity=sv[lm.key]?'1':'.3';
+        row.appendChild(dot);row.appendChild(txt);
+        itRows.appendChild(row);
+      });
+      const tr=document.createElement('div');
+      tr.className='it-row';
+      tr.style.cssText='margin-top:6px;padding-top:6px;border-top:0.5px solid #e8e0cc;font-style:italic;color:#6a6a58;font-size:10px';
+      tr.textContent=sv.techNote;
+      itRows.appendChild(tr);
+      pLabelEls.forEach(l=>l.classList.remove('hi'));
+      pLabelEls[fi].classList.add('hi');
+    }
+    const tx=Math.min(e.clientX-rect.left+14, rect.width-210);
+    const ty=Math.min(e.clientY-rect.top-20, rect.height-190);
+    tip.style.left=tx+'px'; tip.style.top=Math.max(8,ty)+'px';
+    tip.classList.add('vis');
+    cvs.style.cursor='pointer';
+  } else {
+    hovI=-1; tip.classList.remove('vis');
+    pLabelEls.forEach(l=>l.classList.remove('hi'));
+    cvs.style.cursor=drag?'grabbing':'grab';
+  }
+}
+window.addEventListener('mousemove',onMouseMove);
+
+/* view mode */
+let viewMode='all';
+function setView(v){
+  viewMode=v;
+  cols.forEach((col,i)=>{
+    const s=S[i];
+    const show = v==='all' ? true
+      : v==='sleep' ? s.sleep===1
+      : v==='anxiety' ? s.anxiety===1
+      : v==='depression' ? s.depression===1
+      : v==='tech' ? s.tech==='neu'
+      : v==='phases' ? [s.pre,s.early,s.long].filter(Boolean).length>=2
+      : true;
+    col.layers.forEach(({mesh,lm,present})=>{
+      if(present){
+        const c = v==='tech'
+          ? (s.tech==='enc' ? 0x1d7a52 : 0xa07818)
+          : v==='phases'
+          ? ([s.pre,s.early,s.long].filter(Boolean).length===3 ? 0x1d7a52 : 0x5a4ed0)
+          : lm.color;
+        const em = v==='tech'
+          ? (s.tech==='enc' ? 0x0a3020 : 0x402808)
+          : lm.emissive;
+        mesh.material = mat(c, em, show?1:.12);
+      } else {
+        mesh.material.opacity = show?.15:.04;
+      }
+    });
+    pLabelEls[i].style.opacity = show?'1':'.25';
+  });
+}
+
+function openFilters(){
+  const fp=document.getElementById('filterPanel');
+  fp.style.display = fp.style.display==='none'?'flex':'none';
+}
+
+/* animate */
+const clock=new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const t=clock.getElapsedTime();
+  cols.forEach((col,i)=>{
+    const isH=hovI===i;
+    col.grp.position.y = isH ? 0.18 : Math.sin(t*.55+i*.9)*.04;
+    col.layers.forEach(({mesh,present})=>{
+      if(present&&isH) mesh.material.emissiveIntensity=.45+Math.sin(t*2.8)*.12;
+      else if(present) mesh.material.emissiveIntensity=.18+Math.sin(t*.8+i)*.04;
+    });
+  });
+  purp.position.x=Math.sin(t*.15)*9;
+  purp.position.z=Math.cos(t*.15)*7;
+  updateLabels();
+  renderer.render(scene,camera);
+}
+
+/* story interactives */
+function buildTL(){
+  const c=document.getElementById('tlRows');
+  S.forEach((s,i)=>{
+    const row=document.createElement('div'); row.className='tl-row';
+    const pl=document.createElement('div'); pl.className='tl-pl'; pl.textContent='P'+(i+1); row.appendChild(pl);
+    [{k:'pre',bg:'#e8f0fa',fill:'#c0d8f5',tc:'#185fa5'},{k:'early',bg:'#f0eefe',fill:'#d0c8f8',tc:'#5a4ed0'},{k:'long',bg:'#e8f5ee',fill:'#b8e8cc',tc:'#1a6b3a'}].forEach(ph=>{
+      const cell=document.createElement('div'); cell.className='tl-cell';
+      cell.style.background=s[ph.k]?ph.fill:ph.bg;
+      cell.style.color=s[ph.k]?ph.tc:'#c8c0a8';
+      cell.textContent=s[ph.k]?ph.k.charAt(0).toUpperCase()+ph.k.slice(1):'';
+      row.appendChild(cell);
+    });
+    const phases=[s.pre,s.early,s.long].filter(Boolean).length;
+    const note=document.createElement('div'); note.className='tl-note';
+    note.textContent=phases===3?'★ all':phases===0?'—':phases+'ph';
+    note.style.color=phases===3?'#7a6ff0':'#b0a890';
+    row.appendChild(note); c.appendChild(row);
+  });
+}
+
+function buildTech(){
+  const f=document.getElementById('techBubbles');
+  S.forEach((s,i)=>{
+    const b=document.createElement('div');
+    b.className='p-bub '+(s.tech==='enc'?'enc':'neu');
+    b.textContent='P'+(i+1);
+    b.onclick=()=>{
+      document.querySelectorAll('.p-bub').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+      const box=document.getElementById('techDetail');
+      box.textContent=s.techNote;
+      box.style.background=s.tech==='enc'?'#e8f5ee':'#fef5e0';
+      box.style.color=s.tech==='enc'?'#1a6b3a':'#7a4808';
+      box.style.fontStyle='italic';
+    };
+    f.appendChild(b);
+  });
+}
+
+function buildAccess(){
+  const g=document.getElementById('accessGrid');
+  const pc={no:'#1d7a52',yes:'#7a6ff0',maybe:'#a07818'};
+  const pl={no:'No concern',yes:'Concerned',maybe:'Maybe'};
+  S.forEach((s,i)=>{
+    const card=document.createElement('div'); card.className='ap';
+    const lbl=document.createElement('div'); lbl.className='ap-l'; lbl.textContent='P'+(i+1); card.appendChild(lbl);
+    const dots=document.createElement('div'); dots.className='ap-dots';
+    if(s.cancer){const d=document.createElement('div');d.className='ap-dot';d.style.background='#7a6ff0';dots.appendChild(d);}
+    if(s.mh){const d=document.createElement('div');d.className='ap-dot';d.style.background='#5a4ed0';dots.appendChild(d);}
+    if(s.sw){const d=document.createElement('div');d.className='ap-dot';d.style.background='#1d7a52';dots.appendChild(d);}
+    card.appendChild(dots);
+    const priv=document.createElement('div'); priv.className='ap-pr';
+    priv.style.color=pc[s.priv]||'#8a8a78'; priv.textContent=pl[s.priv]||''; card.appendChild(priv);
+    card.onclick=()=>{
+      document.querySelectorAll('.ap').forEach(x=>x.classList.remove('sel'));
+      card.classList.add('sel');
+      const box=document.getElementById('accessDetail');
+      box.textContent=s.accessNote; box.style.fontStyle='italic';
+    };
+    g.appendChild(card);
+  });
+}
+
+/* scroll-reveal chapters */
+const chapters=document.querySelectorAll('.chapter');
+const chapObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.15});
+chapters.forEach(ch=>chapObserver.observe(ch));
+
+/* nav highlight on scroll */
+const navSteps=document.querySelectorAll('.sn-step');
+function activeCh(n){
+  navSteps.forEach(s=>s.classList.remove('active'));
+  navSteps[n].classList.add('active');
+  const el=document.getElementById('ch'+n);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+const navObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      const n=parseInt(id.replace('ch',''));
+      if(!isNaN(n)){
+        navSteps.forEach(s=>s.classList.remove('active'));
+        if(navSteps[n]) navSteps[n].classList.add('active');
+      }
+    }
+  });
+},{threshold:0.4});
+document.querySelectorAll('.chapter').forEach(c=>navObserver.observe(c));
+
+function scrollToStory(){
+  document.getElementById('story').scrollIntoView({behavior:'smooth'});
+}
+
+/* loading */
+function load(){
+  const bar=document.getElementById('ldBar');
+  const lbl=document.getElementById('ldLbl');
+  const steps=[[15,'Building survivor columns…'],[35,'Placing symptom layers…'],[60,'Setting the lights…'],[80,'Rendering the scene…'],[100,'Ready']];
+  let si=0;
+  const iv=setInterval(()=>{
+    if(si>=steps.length){clearInterval(iv);return;}
+    const[p,m]=steps[si++];
+    bar.style.width=p+'%'; lbl.textContent=m;
+    if(p===100){
+      setTimeout(()=>{
+        document.getElementById('loading').classList.add('done');
+        camUpdate(); animate();
+        buildTL(); buildTech(); buildAccess();
+      },350);
+    }
+  },260);
+}
+load();
+</script>
+</body>
+</html>
